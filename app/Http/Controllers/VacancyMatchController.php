@@ -6,6 +6,7 @@ use App\Models\Candidate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use App\Ai\Agents\DataExtractor;
 
 class VacancyMatchController extends Controller
 {
@@ -20,7 +21,14 @@ class VacancyMatchController extends Controller
             'vacancy_pdf' => ['required', 'file', 'mimes:pdf', 'max:10240'],
         ]);
 
-        $path = $request->file('vacancy_pdf')->store('vacancies', 'local');
+        $vacancy = (new DataExtractor)->prompt(
+            'Analyze the attached sales transcript...',
+            attachments: [
+                $request->file('vacancy_pdf'),
+            ]
+        );
+
+        dd($vacancy->structured);
 
         // TODO: Match Vacancy to candidate
         $candidates = Candidate::inRandomOrder()->take(5)->get();

@@ -9,8 +9,9 @@ use Laravel\Ai\Contracts\HasStructuredOutput;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Promptable;
 use Stringable;
+use App\Seniority;
 
-class DataExtractor implements Agent, Conversational, HasTools, HasStructuredOutput, IsEvaluatable
+class DataExtractor implements Agent, Conversational, HasTools, HasStructuredOutput
 {
     use Promptable;
 
@@ -19,7 +20,7 @@ class DataExtractor implements Agent, Conversational, HasTools, HasStructuredOut
      */
     public function instructions(): Stringable|string
     {
-        return 'You are a helpful assistant.';
+        return 'Extract structured data from the provided vacancy PDF and return it in the specified format.';
     }
 
     /**
@@ -46,15 +47,10 @@ class DataExtractor implements Agent, Conversational, HasTools, HasStructuredOut
     public function schema(JsonSchema $schema): array
     {
         return [
-            'value' => $schema->string()->required(),
+            'company' => $schema->string()->required(),
+            'seniority' => $schema->string()->enum(Seniority::cases())->required(),
+            'role' => $schema->string()->required(),
+            'skills' => $schema->array()->items($schema->string())->required(),
         ];
-    }
-
-    public function evaluateCase(Message $input): AgentResponse
-    {
-        $this->prompt($input->message());
-        return AgentResponse::make([
-            'value' => 'test',
-        ]);
     }
 }
