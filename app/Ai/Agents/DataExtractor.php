@@ -2,6 +2,7 @@
 
 namespace App\Ai\Agents;
 
+use App\Seniority;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Conversational;
@@ -9,9 +10,9 @@ use Laravel\Ai\Contracts\HasStructuredOutput;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Promptable;
 use Stringable;
-use App\Seniority;
 
-class DataExtractor implements Agent, Conversational, HasTools, HasStructuredOutput
+#[Model('gpt-5-mini-2025-08-07')]
+class DataExtractor implements Agent, Conversational, HasStructuredOutput, HasTools
 {
     use Promptable;
 

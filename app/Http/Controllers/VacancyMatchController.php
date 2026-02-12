@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Ai\Agents\CandidateMatcher;
+use App\Ai\Agents\DataExtractor;
 use App\Models\Candidate;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
-use App\Ai\Agents\DataExtractor;
 
 class VacancyMatchController extends Controller
 {
@@ -22,20 +22,20 @@ class VacancyMatchController extends Controller
         ]);
 
         $vacancy = (new DataExtractor)->prompt(
-            'Analyze the attached sales transcript...',
+            'Extract the vacancy details from the attached PDF.',
             attachments: [
                 $request->file('vacancy_pdf'),
             ]
         );
 
-        dd($vacancy->structured);
+        $result = CandidateMatcher::make($vacancy->structured)->prompt('Find the best candidates for this vacancy.');
 
-        // TODO: Match Vacancy to candidate
-        $candidates = Candidate::inRandomOrder()->take(5)->get();
+        $candidates = Candidate::whereIn('id', $result->structured['candidateIds'] ?? [])->get();
 
         return view('vacancy.results', [
+            'vacancy' => $vacancy->structured,
+            'reasoning' => $result->structured['reasoning'] ?? 'No candidates found.',
             'candidates' => $candidates,
-            'vacancyPath' => $path,
         ]);
     }
 }

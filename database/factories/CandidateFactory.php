@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Concerns\HasRoleSkills;
 use App\Models\Candidate;
 use App\Role;
 use App\Seniority;
@@ -12,17 +13,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CandidateFactory extends Factory
 {
-    protected $model = Candidate::class;
+    use HasRoleSkills;
 
-    private const SKILLS_BY_ROLE = [
-        'backend_developer' => ['PHP', 'Laravel', 'MySQL', 'PostgreSQL', 'Redis', 'Docker', 'REST API', 'GraphQL', 'Node.js', 'Python'],
-        'frontend_developer' => ['JavaScript', 'TypeScript', 'React', 'Vue.js', 'Angular', 'HTML', 'CSS', 'Tailwind CSS', 'Next.js', 'Webpack'],
-        'fullstack_developer' => ['PHP', 'Laravel', 'JavaScript', 'Vue.js', 'React', 'MySQL', 'Docker', 'REST API', 'Tailwind CSS', 'Node.js'],
-        'devops_engineer' => ['Docker', 'Kubernetes', 'AWS', 'GCP', 'CI/CD', 'Terraform', 'Ansible', 'Linux', 'Nginx', 'Monitoring'],
-        'qa_engineer' => ['Selenium', 'Cypress', 'PHPUnit', 'Jest', 'API Testing', 'Load Testing', 'Test Planning', 'Bug Tracking', 'Automation'],
-        'ui_ux_designer' => ['Figma', 'Sketch', 'Adobe XD', 'Prototyping', 'User Research', 'Wireframing', 'Design Systems', 'Accessibility', 'UI Design'],
-        'project_manager' => ['Agile', 'Scrum', 'Jira', 'Confluence', 'Risk Management', 'Stakeholder Management', 'Budgeting', 'Team Leadership'],
-    ];
+    protected $model = Candidate::class;
 
     /**
      * @return array<string, mixed>
@@ -30,7 +23,7 @@ class CandidateFactory extends Factory
     public function definition(): array
     {
         $role = fake()->randomElement(Role::cases());
-        $availableSkills = self::SKILLS_BY_ROLE[$role->value] ?? [];
+        $availableSkills = static::getSkillsForRole($role->value);
 
         return [
             'name' => fake()->name(),
@@ -44,7 +37,7 @@ class CandidateFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'role' => $role,
-            'skills' => fake()->randomElements(self::SKILLS_BY_ROLE[$role->value] ?? [], fake()->numberBetween(3, 6)),
+            'skills' => fake()->randomElements(static::getSkillsForRole($role->value), fake()->numberBetween(3, 6)),
         ]);
     }
 

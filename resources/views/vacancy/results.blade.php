@@ -24,8 +24,9 @@
             Found {{ $candidates->count() }} matching candidates for your vacancy.
         </p>
 
+
         <div class="space-y-4">
-            @foreach ($candidates as $candidate)
+            @forelse ($candidates as $candidate)
                 <div class="p-6 bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm">
                     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                         <div>
@@ -36,6 +37,7 @@
                         </div>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($candidate->skills as $skill)
+
                                 <span class="inline-block px-3 py-1 text-xs bg-[#dbdbd7] dark:bg-[#3E3E3A] rounded-full">
                                     {{ $skill }}
                                 </span>
@@ -43,8 +45,20 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="p-6 bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm text-center">
+                    <p class="text-[#706f6c] dark:text-[#A1A09A]">No matching candidates found.</p>
+                </div>
+            @endforelse
+        </div>   
+        
+        <div class="mt-8 p-6 bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm">
+            <h2 class="text-lg font-medium mb-4">AI Reasoning</h2>
+            <div class="reasoning-content text-sm text-[#706f6c] dark:text-[#A1A09A] space-y-4 [&>h2]:text-lg [&>h2]:font-semibold [&>h2]:text-[#1b1b18] [&>h2]:dark:text-[#EDEDEC] [&>h2]:mt-6 [&>h2]:mb-3 [&>h3]:text-base [&>h3]:font-semibold [&>h3]:text-[#1b1b18] [&>h3]:dark:text-[#EDEDEC] [&>h3]:mt-4 [&>h3]:mb-2 [&>ol]:list-decimal [&>ol]:pl-5 [&>ul]:list-disc [&>ul]:pl-5 [&>strong]:text-[#1b1b18] [&>strong]:dark:text-[#EDEDEC]">
+                {!! Str::markdown($reasoning) !!}
+            </div>
         </div>
+
     </div>
 </body>
 </html>
