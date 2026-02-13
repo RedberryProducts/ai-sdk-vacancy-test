@@ -22,16 +22,7 @@ class VacancyMatchController extends Controller
             'vacancy_pdf' => ['required', 'file', 'mimes:pdf', 'max:10240'],
         ]);
 
-        $vacancy = (new DataExtractor)->prompt(
-            'Extract the vacancy details from the attached PDF.',
-            attachments: [
-                $request->file('vacancy_pdf'),
-            ]
-        );
-
-        $result = CandidateMatcher::make($vacancy->structured)->prompt('Find the best candidates for this vacancy.', timeout: 120);
-
-        $candidates = Candidate::whereIn('id', $result->structured['candidateIds'] ?? [])->get();
+        // AI Agents here
 
         $logs = AiLog::whereIn('invocation_id', [$vacancy->invocationId, $result->invocationId])
             ->orderBy('created_at', 'asc')
