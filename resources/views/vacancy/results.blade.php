@@ -50,7 +50,49 @@
                     <p class="text-[#706f6c] dark:text-[#A1A09A]">No matching candidates found.</p>
                 </div>
             @endforelse
-        </div>   
+        </div>
+
+        @if($logs->isNotEmpty())
+        <details class="mt-8 bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm">
+            <summary class="p-6 cursor-pointer select-none hover:bg-[#f5f5f4] dark:hover:bg-[#1c1c1b] transition-colors">
+                <span class="text-lg font-medium">AI Activity Trace</span>
+                <span class="ml-2 text-sm text-[#706f6c] dark:text-[#A1A09A]">({{ $logs->count() }} events)</span>
+            </summary>
+            <div class="border-t border-[#e3e3e0] dark:border-[#3E3E3A]">
+                @foreach($logs as $log)
+                <div class="p-4 {{ !$loop->last ? 'border-b border-[#e3e3e0] dark:border-[#3E3E3A]' : '' }}">
+                    @if($log->type === 'agent_prompted')
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="inline-block px-2 py-0.5 text-xs font-medium bg-[#dbeafe] dark:bg-[#1e3a5f] text-[#1e40af] dark:text-[#93c5fd] rounded">Agent Response</span>
+                            <span class="text-xs text-[#706f6c] dark:text-[#A1A09A]">{{ $log->agent }}</span>
+                        </div>
+                        <div class="mb-2">
+                            <p class="text-xs font-medium text-[#706f6c] dark:text-[#A1A09A] mb-1">Prompt:</p>
+                            <pre class="text-xs bg-[#f5f5f4] dark:bg-[#0a0a0a] p-2 rounded overflow-x-auto"><code>{{ $log->prompt }}</code></pre>
+                        </div>
+                        <div>
+                            <p class="text-xs font-medium text-[#706f6c] dark:text-[#A1A09A] mb-1">Response:</p>
+                            <pre class="text-xs bg-[#f5f5f4] dark:bg-[#0a0a0a] p-2 rounded overflow-x-auto max-h-48 overflow-y-auto"><code>{{ json_encode($log->response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</code></pre>
+                        </div>
+                    @else
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="inline-block px-2 py-0.5 text-xs font-medium bg-[#dbdbd7] dark:bg-[#3E3E3A] rounded">{{ $log->tool }}</span>
+                            <span class="text-xs text-[#706f6c] dark:text-[#A1A09A]">via {{ $log->agent }}</span>
+                        </div>
+                        <div class="mb-2">
+                            <p class="text-xs font-medium text-[#706f6c] dark:text-[#A1A09A] mb-1">Arguments:</p>
+                            <pre class="text-xs bg-[#f5f5f4] dark:bg-[#0a0a0a] p-2 rounded overflow-x-auto"><code>{{ json_encode($log->arguments, JSON_PRETTY_PRINT) }}</code></pre>
+                        </div>
+                        <div>
+                            <p class="text-xs font-medium text-[#706f6c] dark:text-[#A1A09A] mb-1">Result:</p>
+                            <pre class="text-xs bg-[#f5f5f4] dark:bg-[#0a0a0a] p-2 rounded overflow-x-auto max-h-48 overflow-y-auto"><code>{{ $log->result }}</code></pre>
+                        </div>
+                    @endif
+                </div>
+                @endforeach
+            </div>
+        </details>
+        @endif   
         
         <div class="mt-8 p-6 bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm">
             <h2 class="text-lg font-medium mb-4">AI Reasoning</h2>
