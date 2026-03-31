@@ -37,23 +37,6 @@ class VacancyMatchController extends Controller
 
         $result = CandidatesMatcher::make($vacancy->structured)->prompt('Find the best matching candidates for this vacancy.');
 
-
-        $toolResult = "ID: 172, Name: Carol Douglas DDS, Role: Project Manager, Seniority: Senior, Skills: Team Leadership, Confluence, Budgeting, Agile";
-        $messages = [
-            new UserMessage('Find the best matching candidates for this vacancy.'),
-            new AssistantMessage('', collect([$result->toolCalls[0]])),
-            new ToolResultMessage(
-                collect([new ToolResult(
-                    name: $result->toolCalls[0]->name,
-                    id: $result->toolCalls[0]->id,
-                    arguments: $result->toolCalls[0]->arguments,
-                    result: $toolResult,
-                )])
-            ),
-        ];
-        $result = CandidatesMatcher::make($vacancy->structured)->withMessages($messages)->prompt('Tell me fun story');
-        dd($result);
-
         $candidates = Candidate::whereIn('id', $result->structured['candidateIds'] ?? [])->get();
 
         $logs = AiLog::whereIn('invocation_id', [$vacancy->invocationId, $result->invocationId])

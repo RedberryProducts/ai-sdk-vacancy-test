@@ -77,16 +77,16 @@ class CandidatesMatcher implements Agent, Conversational, HasTools
     /**
      * Get the agent's structured output schema definition.
      */
-    // public function schema(JsonSchema $schema): array
-    // {
-    //     return [
-    //         'reasoning' => $schema->string()
-    //             ->description('Detailed explanation of why these candidates were selected, including company research insights and skill analysis')
-    //             ->required(),
-    //         'candidateIds' => $schema->array()
-    //             ->items($schema->integer())
-    //             ->description('Array of maximum 3 candidate IDs representing the best matches, empty if no suitable candidates found')
-    //             ->required(),
-    //     ];
-    // }
+    public function schema(JsonSchema $schema): array
+    {
+        return [
+            'reasoning' => $schema->string()
+                ->description('Detailed explanation of why these candidates were selected, including company research insights and skill analysis')
+                ->required(),
+            'candidateIds' => $schema->array()
+                ->items($schema->integer())
+                ->description('Array of maximum 3 candidate IDs representing the best matches, empty if no suitable candidates found')
+                ->required(),
+        ];
+    }
 }
