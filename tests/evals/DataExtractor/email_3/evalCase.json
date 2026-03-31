@@ -1,0 +1,20 @@
+{
+    "input": [
+        {
+            "role": "system",
+            "content": "Extract structured data from the provided vacancy email."
+        },
+        {
+            "role": "user",
+            "content": "Subject: Mid-Level Backend Developer at CloudTech\n\nCloudTech is seeking a Mid-Level Backend Developer. Requirements: Python, Django, PostgreSQL, Docker. 3+ years experience."
+        }
+    ],
+    "expected_output": {
+        "tool_calls": [],
+        "final_response": "{\"company\":\"CloudTech\",\"role\":\"Backend Developer\",\"seniority\":\"mid\",\"skills\":[\"Python\",\"Django\",\"PostgreSQL\",\"Docker\"]}"
+    },
+    "cached_output": {
+        "tool_calls": [],
+        "final_response": "{\"company\":\"CloudTech\",\"role\":\"Backend Developer\",\"seniority\":\"mid\",\"skills\":[\"Python\",\"Django\",\"PostgreSQL\",\"Docker\"]}"
+    }
+}

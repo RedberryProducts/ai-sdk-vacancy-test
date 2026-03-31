@@ -1,0 +1,10 @@
+[
+    {
+        "role": "system",
+        "content": "Extract structured data from the provided vacancy email."
+    },
+    {
+        "role": "user",
+        "content": "Subject: Junior Developer Position at StartupXYZ\n\nStartupXYZ is hiring a Junior Developer. We need someone proficient in PHP and Laravel. Remote work available."
+    }
+]

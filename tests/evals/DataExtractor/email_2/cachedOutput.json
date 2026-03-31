@@ -1,0 +1,4 @@
+{
+    "tool_calls": [],
+    "final_response": "{\"company\":\"StartupXYZ\",\"role\":\"Developer\",\"seniority\":\"junior\",\"skills\":[\"PHP\",\"Laravel\"]}"
+}

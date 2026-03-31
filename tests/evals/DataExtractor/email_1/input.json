@@ -1,0 +1,10 @@
+[
+    {
+        "role": "system",
+        "content": "Extract structured data from the provided vacancy email."
+    },
+    {
+        "role": "user",
+        "content": "Subject: Job Opening: Senior Software Engineer at TechCorp\n\nWe are looking for a Senior Software Engineer to join our team at TechCorp. The ideal candidate should have experience with PHP, Laravel, and Vue.js. This is a senior-level position requiring 5+ years of experience. Skills required: PHP, Laravel, Vue.js, MySQL, REST APIs, Git."
+    }
+]
