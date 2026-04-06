@@ -36,7 +36,7 @@ class VacancyMatchController extends Controller
         );
 
         $result = CandidatesMatcher::make($vacancy->structured)->prompt('Find the best matching candidates for this vacancy.');
-
+        
         $candidates = Candidate::whereIn('id', $result->structured['candidateIds'] ?? [])->get();
 
         $logs = AiLog::whereIn('invocation_id', [$vacancy->invocationId, $result->invocationId])

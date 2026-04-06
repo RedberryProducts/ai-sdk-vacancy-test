@@ -14,7 +14,7 @@ use Laravel\Ai\Providers\Tools\WebSearch;
 use Stringable;
 use Laravel\Ai\Attributes\MaxSteps;
 
-class CandidatesMatcher implements Agent, Conversational, HasTools
+class CandidatesMatcher implements Agent, Conversational, HasTools, HasStructuredOutput
 {
     use HasRoleSkills;
     use Promptable;
